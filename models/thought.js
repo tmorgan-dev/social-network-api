@@ -1,30 +1,37 @@
-// Require schema and model from mongoose
 const mongoose = require('mongoose');
 
-// Construct a new instance of the schema class
 const thoughtSchema = new mongoose.Schema(
     {
-        thoughtId: {
+        thoughtText: {
             type: String,
+            required: true,
+            minLength: 1,
+            maxLength: 280,
         },
-        thoughtBody: {
-            type: String,
+        createdAt: {
+            type: Date,
+            // TODO: Set default value to the current timestamp
+            // TODO: Use a getter method to format the timestamp on query
         },
         username: {
             type: String,
+            required: true,
         },
-        createdAt: {
-            type: String,
-        },
+        // reactions: [
+        //     {
+        //         type: Schema.Types.ObjectId,
+        //         ref: 'reaction',
+        //     },
+        // ],
     },
     {
         toJSON: {
+            //TODO: Create a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.
             virtuals: true,
         },
         id: false,
     }
 );
 
-// Using mongoose.model() to compile a model based on the schema 'thoughtSchema'
 const Thought = mongoose.model('Thought', thoughtSchema);
 module.exports = Thought;
