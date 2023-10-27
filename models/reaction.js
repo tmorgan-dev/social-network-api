@@ -1,11 +1,11 @@
 // TODO: This will not be a model, but rather will be used as the reaction field's subdocument schema in the Thought model.
-const mongoose = require('mongoose');
+const {Schema, Types} = require("mongoose")
 
-const reactionSchema = new mongoose.Schema(
+const reactionSchema = Schema(
     {
-        reactionId: {
-            // TODO: Use Mongoose's ObjectId data type
-            // TODO: Default value is set to a new ObjectId
+        reactionId: { 
+            type: Schema.Types.ObjectId, // Is this correct?
+            default: Types.ObjectId, // Is this correct?
         },
         reactionBody: {
             type: String,
@@ -22,8 +22,13 @@ const reactionSchema = new mongoose.Schema(
             // TODO: Use a getter method to format the timestamp on query
         },
     },
+    {
+        toJSON: {
+            getters: true
+
+        },
+        id:false
+    }
 );
 
-const Reaction = mongoose.model('Reaction', reactionSchema);
-
-module.exports = Reaction;
+module.exports = reactionSchema;

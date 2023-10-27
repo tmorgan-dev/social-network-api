@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const thoughtSchema = new mongoose.Schema(
+const thoughtSchema = Schema(
     {
         thoughtText: {
             type: String,
@@ -10,28 +10,26 @@ const thoughtSchema = new mongoose.Schema(
         },
         createdAt: {
             type: Date,
-            // TODO: Set default value to the current timestamp
-            // TODO: Use a getter method to format the timestamp on query
+            default: Date.now,
+            get: timestamp => dateFormat(timestamp)
         },
         username: {
             type: String,
             required: true,
         },
-        // reactions: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'reaction',
-        //     },
-        // ],
+        reactions: [reactionSchema],
     },
     {
         toJSON: {
-            //TODO: Create a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.
-            virtuals: true,
+            getters: true,
         },
         id: false,
     }
 );
 
-const Thought = mongoose.model('Thought', thoughtSchema);
+thoughtSchema.virtual("reactionCount").get(function(){
+    return this.reactions.length
+})
+
+const Thought = model('Thought', thoughtSchema);
 module.exports = Thought;
