@@ -12,7 +12,14 @@ const userController = {
     },
     async getOneUser(req, res) {
         try {
-            
+            const userData = await User.findOne({_id:req.params.userId})
+            .select("-__v")
+            .populate("friends")
+            .populate("thoughts")
+            if (!userData) {
+                return res.status(404).json({message:"No User Found"})
+            }
+            res.json(userData)
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -20,7 +27,8 @@ const userController = {
     },
     async createUser(req, res) {
         try {
-            
+            const userData = await User.create(req.body)
+            res.json(userData)
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -28,7 +36,18 @@ const userController = {
     },
     async updateUser(req, res) {
         try {
-            
+            const userData = await User.findOneAndUpdate(
+                {
+                    _id:req.params.userId
+                },
+                {
+                    $set:req.body
+                },
+                {
+                    runValidators: true,
+                    new: true,
+                }
+            )
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -36,7 +55,16 @@ const userController = {
     },
     async deleteUser(req, res) {
         try {
-            
+            const userData = await User.findOneAndDelete({
+                _id:req.params.userId
+            })
+            if (!userData) {
+                return res.status(404).json({message:"No User Found"})
+            }
+            await Thought.deleteMany({
+                _id:{$in:userData.thoughts}
+            })
+            res.json({message:"User and Thoughts Deleted"})
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -44,7 +72,21 @@ const userController = {
     },
     async addFriend(req, res) {
         try {
-            
+            const userData = await User.findOneAndUpdate({
+                _id:req.params.userId
+            },
+            {
+                $addToSet: {friends:req.params.friendId}
+            },
+            {
+                new:true,
+            }
+
+            )
+            if (!userData) {
+                return res.status(404).json({message:"No User Found"})
+            }
+            res.json(userData)
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -52,7 +94,21 @@ const userController = {
     },
     async deleteFriend(req, res) {
         try {
-            
+            const userData = await User.findOneAndUpdate({
+                _id:req.params.userId
+            },
+            {
+                $pull: {friends:req.params.friendId}
+            },
+            {
+                new:true,
+            }
+
+            )
+            if (!userData) {
+                return res.status(404).json({message:"No User Found"})
+            }
+            res.json(userData)
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
