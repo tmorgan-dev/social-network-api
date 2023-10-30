@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed": "node utils/seed.js"
   },
   "name": "social-network-api",
   "description": "A mongoDB where users can share their thoughts, react to friends’ thoughts, and create a friend list.",

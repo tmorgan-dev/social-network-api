@@ -3,7 +3,6 @@ const db = require('./config/connection');
 const routes = require('./routes');
 
 const { User } = require('./models/user');
-const { Reaction } = require('./models/reaction');
 const { Thought } = require('./models/thought');
 
 const PORT = 3001;
