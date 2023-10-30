@@ -20,21 +20,32 @@ connection.once('open', async () => {
         },
 
     ];
-
     await User.insertMany(userData);
 
     const thoughtData = [
         {
             thoughtText: 'Hello, world!',
             username: 'user1',
+            reactions: [
+                {
+                    reactionBody: 'Great Job!',
+                    username: 'user2',
+                },
+            ],
         },
         {
             thoughtText: 'Mongoose is great!',
             username: 'user2',
+            reactions: [
+                {
+                    reactionBody: 'I love NoSQL!',
+                    username: 'user1',
+                },
+            ],
         },
     ];
-    
     await Thought.insertMany(thoughtData);
+
     console.info('Seeding complete! 🌱');
     process.exit(0);
 });
