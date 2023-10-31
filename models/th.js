@@ -1,4 +1,5 @@
     const { Schema, model } = require('mongoose');
+    const reactionSchema = require("./Reaction")
 
     function dateFormat(timestamp) {
         const date = new Date(timestamp);
@@ -13,37 +14,7 @@
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
 
-    const reactionSchema = Schema(
-        {
-            reactionId: {
-                type: Schema.Types.ObjectId,
-                // default: Types.ObjectId,
-                default: () => new Types.ObjectId(),
-            },
-            reactionBody: {
-                type: String,
-                required: true,
-                maxLength: 280,
-            },
-            username: {
-                type: String,
-                required: true,
-            },
-            createdAt: {
-                type: Date,
-                default: Date.now,
-                get: timestamp => dateFormat(timestamp)
-            },
-        },
-        {
-            toJSON: {
-                getters: true
-            },
-            id: false
-        }
-    );
-
-    const thoughtSchema = Schema(
+    const thoughtSchema = new Schema(
         {
             thoughtText: {
                 type: String,
