@@ -34,6 +34,7 @@ const userController = {
             res.status(500).json(error)
         }
     },
+    //TODO: Fix updateUser
     async updateUser(req, res) {
         try {
             const userData = await User.findOneAndUpdate(
@@ -47,7 +48,7 @@ const userController = {
                     runValidators: true,
                     new: true,
                 }
-            )
+            ) 
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -61,6 +62,7 @@ const userController = {
             if (!userData) {
                 return res.status(404).json({message:"No User Found"})
             }
+            // TODO: Thoughts are left intact after user is deleted
             await Thought.deleteMany({
                 _id:{$in:userData.thoughts}
             })

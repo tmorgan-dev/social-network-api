@@ -23,6 +23,7 @@ const thoughtController = {
             res.status(500).json(error)
         }
     },
+    //TODO: Push thoughts to an array associated with the user  
     async createThought(req, res) {
         try {
             const thoughtData = await Thought.create(req.body)
@@ -32,6 +33,7 @@ const thoughtController = {
             res.status(500).json(error)
         }
     },
+    //TODO: Fix updateThought
     async updateThought(req, res) {
         try {
             const thoughtData = await Thought.findOneAndUpdate(
@@ -65,6 +67,7 @@ const thoughtController = {
             res.status(500).json(error)
         }
     },
+    //TODO: Fix addReaction
     async addReaction(req, res) {
         try {
             const reactionData = await Thought.findOneAndUpdate({
@@ -87,6 +90,7 @@ const thoughtController = {
             res.status(500).json(error)
         }
     },
+    //TODO: Fix deleteReaction
     async deleteReaction(req, res) {
         try {
             const reactionData = await Thought.findOneAndUpdate({
