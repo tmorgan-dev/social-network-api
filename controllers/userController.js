@@ -67,7 +67,7 @@ const userController = {
             await Thought.deleteMany({
                 _id:{$in:userData.thoughts}
             })
-            res.json({message:"User and Thoughts Deleted"})
+            res.json({message:"User Deleted"})
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -82,7 +82,7 @@ const userController = {
                 $addToSet: {friends:req.params.friendId}
             },
             {
-                new:true,
+                new: true,
             }
 
             )

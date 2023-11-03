@@ -3,7 +3,7 @@ const thoughtController = {
     async getThoughts(req, res) {
         try {
             const thoughtData = await Thought.find()
-            .select("-__v")
+                .select("-__v")
             res.json(thoughtData)
         } catch (error) {
             console.log(error)
@@ -12,10 +12,10 @@ const thoughtController = {
     },
     async getOneThought(req, res) {
         try {
-            const thoughtData = await Thought.findOne({_id:req.params.thoughtId})
-            .select("-__v")
+            const thoughtData = await Thought.findOne({ _id: req.params.thoughtId })
+                .select("-__v")
             if (!thoughtData) {
-                return res.status(404).json({message:"No Thought Found"})
+                return res.status(404).json({ message: "No Thought Found" })
             }
             res.json(thoughtData)
         } catch (error) {
@@ -23,23 +23,24 @@ const thoughtController = {
             res.status(500).json(error)
         }
     },
-    //TODO: Push thoughts to an array associated with the user using the add friend as an example
+    //TODO: Push thoughts to an array associated with the user
     async createThought(req, res) {
         try {
             const thoughtData = await Thought.create(req.body)
-            const userData = await User.findOneAndUpdate(
-                {
-                    _id:req.params.thoughtId
+            const userData = await User.findOneAndUpdate({
+                    _id: req.body.userId
                 },
                 {
-                    $set:req.body
+                    $push: {thoughts: thoughtData._id}
                 },
                 {
-                    runValidators: true,
                     new: true,
                 }
-                )
-            res.json(thoughtData)
+            )
+            if (!userData) {
+                return res.status(404).json({ message: "No User Found" })
+            }
+            res.json({Message: "Thought Created"})
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -49,10 +50,10 @@ const thoughtController = {
         try {
             const thoughtData = await Thought.findOneAndUpdate(
                 {
-                    _id:req.params.thoughtId
+                    _id: req.params.thoughtId
                 },
                 {
-                    $set:req.body
+                    $set: req.body
                 },
                 {
                     runValidators: true,
@@ -68,12 +69,12 @@ const thoughtController = {
     async deleteThought(req, res) {
         try {
             const thoughtData = await Thought.findOneAndDelete({
-                _id:req.params.thoughtId
+                _id: req.params.thoughtId
             })
             if (!thoughtData) {
-                return res.status(404).json({message:"No Thought Found"})
+                return res.status(404).json({ message: "No Thought Found" })
             }
-            res.json({message:"Thought Deleted"})
+            res.json({ message: "Thought Deleted" })
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -83,18 +84,20 @@ const thoughtController = {
     async addReaction(req, res) {
         try {
             const reactionData = await Thought.findOneAndUpdate({
-                _id:req.params.thoughtId
+                _id: req.params.thoughtId
             },
-            {
-                $addToSet: {reactions:req.params.reactionId}
-            },
-            {
-                new:true,
-            }
+                {
+                    $addToSet: { reactions: req.body }
+                },
+                {
+                    runValidators: true,
+                    new: true
+                    
+                }
 
             )
             if (!reactionData) {
-                return res.status(404).json({message:"No Thought Found"})
+                return res.status(404).json({ message: "No Thought Found" })
             }
             res.json(reactionData)
         } catch (error) {
@@ -106,18 +109,19 @@ const thoughtController = {
     async deleteReaction(req, res) {
         try {
             const reactionData = await Thought.findOneAndUpdate({
-                _id:req.params.thoughtId
+                _id: req.params.thoughtId
             },
-            {
-                $pull: {reaction:req.params.reactionId}
-            },
-            {
-                new:true,
-            }
+                {
+                    $pull: {reactions:{ reactionId: req.params.reactionId }}
+                },
+                {
+                    runValidators: true,
+                    new: true
+                }
 
             )
             if (!reactionData) {
-                return res.status(404).json({message:"No Reaction Found"})
+                return res.status(404).json({ message: "No Reaction Found" })
             }
             res.json(reactionData)
         } catch (error) {
