@@ -1,2 +1,25 @@
-# social-network-api
-A mongoDB where users can share their thoughts, react to friends’ thoughts, and create a friend list.
+# Social Network API
+  
+  ## Description
+  A back end database that allows users to add friends, post thoughts and share reactions
+  ## Table of Contents
+  - [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+- [Contributing](#contributing)
+- [Tests](#tests)
+- [Questions?](#questions)
+  ## Installation
+  Navigate to the root directory and run "npm i && npm start"
+  ## Usage
+  A video tutorial of how to run the app and test the routs in Insomnia can be viewed [here](https://drive.google.com/file/d/1a6qBOFO3V_MXb3ZkkzBHqoabqNbQPHPO/view)
+  ## License
+  No License
+  
+  ## Contributing
+  
+  [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](./assets/code_of_conduct.md)
+  ## Tests
+  
+  ## Questions?
+  Send me an email here tmorgan.dev.2023@gmail.com or, click this link to access my GitHub profile https://github.com/tmorgan.dev
