@@ -34,7 +34,6 @@ const userController = {
             res.status(500).json(error)
         }
     },
-    //TODO: Fix updateUser
     async updateUser(req, res) {
         try {
             const userData = await User.findOneAndUpdate(
@@ -48,7 +47,8 @@ const userController = {
                     runValidators: true,
                     new: true,
                 }
-            ) 
+            )
+            res.json(userData)
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
@@ -59,6 +59,7 @@ const userController = {
             const userData = await User.findOneAndDelete({
                 _id:req.params.userId
             })
+            console.log(userData)
             if (!userData) {
                 return res.status(404).json({message:"No User Found"})
             }

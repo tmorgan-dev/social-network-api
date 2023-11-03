@@ -1,4 +1,4 @@
-const { Thought } = require("../models")
+const { Thought, User } = require("../models")
 const thoughtController = {
     async getThoughts(req, res) {
         try {
@@ -23,17 +23,28 @@ const thoughtController = {
             res.status(500).json(error)
         }
     },
-    //TODO: Push thoughts to an array associated with the user  
+    //TODO: Push thoughts to an array associated with the user using the add friend as an example
     async createThought(req, res) {
         try {
             const thoughtData = await Thought.create(req.body)
+            const userData = await User.findOneAndUpdate(
+                {
+                    _id:req.params.thoughtId
+                },
+                {
+                    $set:req.body
+                },
+                {
+                    runValidators: true,
+                    new: true,
+                }
+                )
             res.json(thoughtData)
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
         }
     },
-    //TODO: Fix updateThought
     async updateThought(req, res) {
         try {
             const thoughtData = await Thought.findOneAndUpdate(
@@ -48,6 +59,7 @@ const thoughtController = {
                     new: true,
                 }
             )
+            res.json(thoughtData)
         } catch (error) {
             console.log(error)
             res.status(500).json(error)

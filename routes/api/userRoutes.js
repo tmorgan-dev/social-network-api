@@ -10,7 +10,7 @@ const {
 } = require("../../controllers/userController.js")
 
 router.route("/").get(getUsers).post(createUser)
-router.route("/:userId").get(getOneUser).post(updateUser).delete(deleteUser)
+router.route("/:userId").get(getOneUser).put(updateUser).delete(deleteUser)
 router.route("/:userId/friends/:friendId").post(addFriend).delete(deleteFriend)
 
 module.exports = router;
